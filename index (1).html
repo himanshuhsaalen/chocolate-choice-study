@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <title>Chocolate Choice Study</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      margin: 0;
+      background: #f7f7f7;
+      color: #222;
+    }
+    .box {
+      max-width: 520px;
+      padding: 28px;
+      text-align: center;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0,0,0,.08);
+    }
+  </style>
+</head>
+<body>
+  <div class="box">
+    <p>Opening the survey…</p>
+    <noscript><p>JavaScript is required to open the survey automatically.</p></noscript>
+  </div>
+  <script>
+    (() => {
+      const versions = {
+        V1: "https://tally.so/r/EqKrk2",
+        V2: "https://tally.so/r/Z984aV",
+        V3: "https://tally.so/r/o9ErBx",
+        V4: "https://tally.so/r/1WXZNM"
+      };
+
+      const storageKey = "chocolate_choice_study_version";
+      const params = new URLSearchParams(window.location.search);
+
+      if (params.get("reset") === "1") {
+        localStorage.removeItem(storageKey);
+      }
+
+      const forced = params.get("v");
+      if (["1", "2", "3", "4"].includes(forced)) {
+        const forcedVersion = "V" + forced;
+        localStorage.setItem(storageKey, forcedVersion);
+        window.location.replace(versions[forcedVersion]);
+        return;
+      }
+
+      let assigned = localStorage.getItem(storageKey);
+
+      if (!versions[assigned]) {
+        const keys = Object.keys(versions);
+        const random = new Uint32Array(1);
+        crypto.getRandomValues(random);
+        assigned = keys[random[0] % keys.length];
+        localStorage.setItem(storageKey, assigned);
+      }
+
+      window.location.replace(versions[assigned]);
+    })();
+  </script>
+</body>
+</html>
